@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operon — Documents</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #050E0B;
+    --s1: #091A14;
+    --div: #122E22;
+    --acc: #2DCFB0;
+    --acc2: #1A8A72;
+    --txt: #E8F5F0;
+    --mut: #5A8070;
+  }
+
+  body {
+    background: radial-gradient(ellipse at 50% 0%, #0D2B1E 0%, #050E0B 60%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--txt);
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--txt);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .tagline {
+    font-size: 0.9rem;
+    color: var(--mut);
+    font-style: italic;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .card {
+    background: var(--s1);
+    border: 1px solid var(--div);
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--acc), transparent);
+  }
+
+  .card:hover {
+    border-color: var(--acc2);
+    transform: translateY(-2px);
+  }
+
+  .card-icon { font-size: 1.75rem; }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--txt);
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--mut);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .card-cta {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--acc);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .card-cta::after { content: '→'; }
+
+  .footer {
+    margin-top: 3rem;
+    font-size: 0.72rem;
+    color: var(--mut);
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 500px) {
+    .wordmark { font-size: 2rem; }
+    .cards { grid-template-columns: 1fr; }
+    .card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="wordmark">Operon</div>
+  <div class="tagline">Where systems become products.</div>
+
+  <div class="cards">
+    <a class="card" href="brand-identity.html">
+      <div class="card-icon">🎨</div>
+      <div class="card-title">Brand Identity</div>
+      <div class="card-desc">The Operon name, meaning, colour palette, typography, tagline, and brand personality.</div>
+      <div class="card-cta">View document</div>
+    </a>
+    <a class="card" href="director-proposal.html">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Director Proposal</div>
+      <div class="card-desc">Business case, market opportunity, financial projections, and request for approval.</div>
+      <div class="card-cta">View document</div>
+    </a>
+  </div>
+
+  <div class="footer">THEONEPERCENT HOLDINGS PTE. LTD. · Confidential</div>
+
+</body>
+</html>

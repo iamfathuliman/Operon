@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operon — Director Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #050E0B;
+    --surface:   #091A14;
+    --surface2:  #0D2419;
+    --accent:    #2DCFB0;
+    --accent2:   #1A8A72;
+    --text:      #E8F5F0;
+    --muted:     #5A8070;
+    --divider:   #122E22;
+    --danger:    #E05A5A;
+    --warning:   #D4A035;
+  }
+
+  body {
+    background: radial-gradient(ellipse at 50% 0%, #0D2B1E 0%, #050E0B 60%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4rem 3rem;
+    border-bottom: 1px solid var(--divider);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(45,207,176,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .confidential-badge {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 0 2rem;
+  }
+
+  .cover-eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .cover-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 2rem;
+    max-width: 700px;
+  }
+
+  .cover-desc {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.8;
+  }
+
+  .cover-bottom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--divider);
+  }
+
+  .cover-meta { }
+  .cover-meta .meta-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+  .cover-meta .meta-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ── TOC ── */
+  .toc {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .toc-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .toc-list {
+    list-style: none;
+    display: grid;
+    gap: 0;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .toc-item:last-child { border-bottom: none; }
+
+  .toc-num {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+    width: 28px;
+    flex-shrink: 0;
+  }
+
+  .toc-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    padding-left: 0.5rem;
+  }
+
+  .toc-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ── SECTIONS ── */
+  .doc-section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+  }
+
+  p { color: var(--muted); line-height: 1.8; max-width: 680px; margin-bottom: 1rem; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 14px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card.accent-top::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .card p { font-size: 0.9rem; margin-bottom: 0; }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 2rem; }
+
+  /* ── STAT BLOCKS ── */
+  .stat-block {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 14px;
+    padding: 1.75rem;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .stat-sub {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    opacity: 0.7;
+  }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, #091A14, #0D2419);
+    border: 1px solid var(--accent2);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    margin-top: 2rem;
+  }
+
+  .highlight p {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .highlight p em { color: var(--accent); font-style: normal; }
+
+  /* ── PRICING TABLE ── */
+  .pricing-wrap { margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  .pricing-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .pricing-header {
+    padding: 1.5rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .pricing-type {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .pricing-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .pricing-amount span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+
+  .pricing-body { padding: 1.5rem 2rem; }
+
+  .pricing-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.88rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .pricing-item:last-child { border-bottom: none; }
+
+  .pricing-item::before {
+    content: '✓';
+    color: var(--accent);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  /* ── PROOF TABLE ── */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 14px;
+    padding: 2rem;
+    margin-top: 1.25rem;
+  }
+
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .project-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-desc { font-size: 0.9rem; margin-bottom: 1rem; }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .stack-tag {
+    font-size: 0.72rem;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+  }
+
+  /* ── FINANCIAL TABLE ── */
+  .fin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .fin-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--divider);
+    font-weight: 500;
+  }
+
+  .fin-table th:not(:first-child) { text-align: right; }
+
+  .fin-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--divider);
+    color: var(--muted);
+    vertical-align: top;
+  }
+
+  .fin-table td:not(:first-child) {
+    text-align: right;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .fin-table tr.section-row td {
+    padding-top: 1.5rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    border-bottom: none;
+  }
+
+  .fin-table tr.total-row td {
+    border-top: 2px solid var(--divider);
+    border-bottom: none;
+    padding-top: 1rem;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+  }
+
+  .fin-table tr.total-row td:first-child {
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+
+  .fin-table tr.profit-row td {
+    color: var(--accent) !important;
+    font-size: 1rem;
+    border-top: 2px solid var(--accent2);
+    border-bottom: none;
+    padding-top: 1rem;
+  }
+
+  .conservative { color: var(--muted) !important; }
+  .optimistic { color: var(--accent) !important; }
+
+  .scenario-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+
+  .scenario-label {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 8px 8px 0 0;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .scenario-label.cons { color: var(--muted); }
+  .scenario-label.opt { color: var(--accent); }
+
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 0 0 14px 14px;
+    overflow: hidden;
+    margin-top: 0;
+  }
+
+  /* ── MRR VISUAL ── */
+  .mrr-section { margin-top: 2.5rem; }
+
+  .mrr-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .mrr-bars {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    align-items: flex-end;
+    height: 100px;
+    margin-bottom: 0.75rem;
+  }
+
+  .bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+
+  .bar {
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(to top, var(--accent2), var(--accent));
+    transition: opacity 0.2s;
+  }
+
+  .bar-month {
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ── OPERATIONS ── */
+  .ops-item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--divider);
+    align-items: flex-start;
+  }
+
+  .ops-item:last-child { border-bottom: none; }
+
+  .ops-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--surface2);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .ops-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .ops-desc { font-size: 0.85rem; margin: 0; }
+
+  /* ── STRUCTURE ── */
+  .structure-diagram {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .struct-box {
+    display: inline-block;
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .struct-box.parent {
+    background: var(--surface2);
+    color: var(--muted);
+    border-color: var(--divider);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .struct-box.child {
+    background: linear-gradient(135deg, #091A14, #0D2419);
+    color: var(--accent);
+    border-color: var(--accent2);
+    border-width: 2px;
+  }
+
+  .struct-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 0.5rem 0;
+  }
+
+  .struct-line {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--muted), var(--accent));
+  }
+
+  .struct-arrow {
+    color: var(--accent);
+    font-size: 0.8rem;
+    margin-top: -4px;
+  }
+
+  .struct-note {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .existing-cos {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .existing-co {
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: var(--surface2);
+  }
+
+  .existing-co.new-co {
+    border-color: var(--accent2);
+    color: var(--accent);
+  }
+
+  /* ── APPROVAL ── */
+  .approval-box {
+    background: linear-gradient(135deg, #091A14, #0D2419);
+    border: 2px solid var(--accent2);
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .approval-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .approval-box p {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .approval-items {
+    display: grid;
+    gap: 0.75rem;
+    text-align: left;
+    max-width: 480px;
+    margin: 0 auto 2rem;
+  }
+
+  .approval-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .approval-item::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    text-align: left;
+  }
+
+  .sig-block { border-top: 1px solid var(--divider); padding-top: 1rem; }
+
+  .sig-role {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .sig-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .sig-date {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2.5rem 2rem 3rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  footer .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  footer p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    max-width: 100%;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .grid-2, .grid-3, .grid-4, .pricing-wrap, .sig-grid { grid-template-columns: 1fr; }
+    .cover { padding: 2.5rem 1.5rem; }
+    .doc-section { padding: 3.5rem 1.5rem; }
+    .mrr-bars { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="wordmark">Operon</div>
+    <div class="confidential-badge">Confidential</div>
+  </div>
+
+  <div class="cover-main">
+    <div class="cover-eyebrow">Director Proposal · For Approval</div>
+    <h1 class="cover-title">Proposal to Establish Operon as a Portfolio Company</h1>
+    <p class="cover-desc">A director-level proposal seeking approval to incorporate Operon — a digital product studio under THEONEPERCENT HOLDINGS PTE. LTD. — focused on building software, platforms, and websites for Singapore-based businesses.</p>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-meta">
+      <div class="meta-label">Submitted by</div>
+      <div class="meta-value">Fathul Iman, CEO</div>
+    </div>
+    <div class="cover-meta">
+      <div class="meta-label">Submitted to</div>
+      <div class="meta-value">Board of Directors</div>
+    </div>
+    <div class="cover-meta">
+      <div class="meta-label">Parent Company</div>
+      <div class="meta-value">THEONEPERCENT HOLDINGS PTE. LTD.</div>
+    </div>
+    <div class="cover-meta">
+      <div class="meta-label">Date</div>
+      <div class="meta-value">June 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TABLE OF CONTENTS ── -->
+<div class="toc">
+  <div class="toc-label">Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item">
+      <span class="toc-num">01</span>
+      <span class="toc-name">Executive Summary</span>
+      <span class="toc-sub">Overview & purpose</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">02</span>
+      <span class="toc-name">The Opportunity</span>
+      <span class="toc-sub">Problem & target market</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">03</span>
+      <span class="toc-name">Business Model</span>
+      <span class="toc-sub">Pricing & revenue mechanics</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">04</span>
+      <span class="toc-name">Proof of Concept</span>
+      <span class="toc-sub">Existing work & demonstrated capability</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">05</span>
+      <span class="toc-name">Financial Projections</span>
+      <span class="toc-sub">Year 1 & Year 2 forecast</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">06</span>
+      <span class="toc-name">Operations Plan</span>
+      <span class="toc-sub">Team, tools & delivery</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">07</span>
+      <span class="toc-name">Corporate Structure</span>
+      <span class="toc-sub">Position within holdings group</span>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">08</span>
+      <span class="toc-name">Director Approval</span>
+      <span class="toc-sub">Request & sign-off</span>
+    </li>
+  </ul>
+</div>
+
+<!-- ── 01 EXECUTIVE SUMMARY ── -->
+<section class="doc-section">
+  <div class="section-label">01 · Executive Summary</div>
+  <h2>What this proposal is asking for</h2>
+  <p class="lead">Approval to incorporate Operon — a digital product studio that builds software, platforms, and websites for Singapore-based businesses — as a wholly owned portfolio company under THEONEPERCENT HOLDINGS PTE. LTD.</p>
+
+  <div class="highlight">
+    <p>Operon's proposition is simple: <em>where traditional agencies charge SGD 15,000–50,000 and take months to deliver a custom web application</em>, Operon delivers the same calibre of product at SGD 2,500 with ongoing support for SGD 150 per month — faster, leaner, and built to last.</p>
+  </div>
+
+  <div class="grid-3" style="margin-top:2rem;">
+    <div class="stat-block">
+      <div class="stat-value">SGD 2,500</div>
+      <div class="stat-label">Per project upfront</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-value">SGD 150</div>
+      <div class="stat-label">Permanent monthly recurring</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Portfolio products already live</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 OPPORTUNITY ── -->
+<section class="doc-section">
+  <div class="section-label">02 · The Opportunity</div>
+  <h2>A clear gap in the Singapore market</h2>
+  <p class="lead">Singapore has over 280,000 SMEs, with a growing number of home-based and pick-up focused businesses that need digital ordering and presence tools — but cannot afford traditional web development.</p>
+
+  <div class="grid-2">
+    <div class="card accent-top">
+      <div class="card-title">The Problem</div>
+      <p>Traditional web development in Singapore costs SGD 15,000–50,000 for a custom ordering platform or web application. Turnaround times of 2–4 months are standard. For a home-based food business or small pick-up operation, this is completely out of reach.</p>
+    </div>
+    <div class="card accent-top">
+      <div class="card-title">The Solution</div>
+      <p>Operon delivers the same quality product at a fraction of the cost and time — using an intelligent, systems-driven build process. Clients get a production-ready platform with ongoing maintenance included from day one.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <div class="section-label" style="margin-bottom:1.25rem;">Primary Target Market</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🏠 Home-Based Businesses</div>
+        <p>Singapore has seen significant growth in registered home-based food and retail businesses post-2020. These operators need professional ordering systems but lack the budget for traditional agencies.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🥡 Pick-Up Focused Operations</div>
+        <p>F&B businesses, specialty drink brands, and small retailers offering pick-up (not delivery) need streamlined ordering platforms — a niche Operon has already validated with Repeat Order.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 BUSINESS MODEL ── -->
+<section class="doc-section">
+  <div class="section-label">03 · Business Model</div>
+  <h2>How Operon generates revenue</h2>
+  <p class="lead">A two-part revenue structure: a one-time project fee covering design and development, followed by a permanent monthly recurring fee covering maintenance, updates, and support for as long as the client remains active.</p>
+
+  <div class="pricing-wrap">
+    <div class="pricing-card">
+      <div class="pricing-header">
+        <div class="pricing-type">One-Time · Per Project</div>
+        <div class="pricing-amount">SGD 2,500 <span>upfront</span></div>
+      </div>
+      <div class="pricing-body">
+        <div class="pricing-item">Full website or platform design</div>
+        <div class="pricing-item">Frontend & backend development</div>
+        <div class="pricing-item">Payment integration (where applicable)</div>
+        <div class="pricing-item">Domain setup & deployment</div>
+        <div class="pricing-item">Testing & client handover</div>
+      </div>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-header">
+        <div class="pricing-type">Permanent Monthly · Per Client</div>
+        <div class="pricing-amount">SGD 150 <span>/ month</span></div>
+      </div>
+      <div class="pricing-body">
+        <div class="pricing-item">Platform maintenance & monitoring</div>
+        <div class="pricing-item">Content and menu updates</div>
+        <div class="pricing-item">Bug fixes & performance optimisation</div>
+        <div class="pricing-item">Infrastructure cost coverage</div>
+        <div class="pricing-item">Client support via messaging</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight" style="margin-top:2rem;">
+    <p>The recurring fee is permanent — it continues indefinitely until further notice. Every client retained compounds monthly revenue, making the base grow with every new project completed. <em>20 active clients generates SGD 3,000 per month in stable, recurring income</em> independent of new sales activity.</p>
+  </div>
+
+  <!-- Market Comparison -->
+  <div style="margin-top:3rem;">
+    <div class="section-label" style="margin-bottom:1.25rem;">Market Comparison — What the Market Charges vs What Operon Charges</div>
+    <p style="margin-bottom:1.5rem;">Singapore website development costs have been verified against multiple 2026 market sources. Operon's SGD 2,500 flat fee represents a significant reduction from prevailing market rates — particularly for complex builds like full ordering platforms with payment systems and admin panels.</p>
+
+    <div class="table-wrap" style="border-radius:14px;">
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th>Website Type</th>
+            <th>Agency Rate</th>
+            <th>Freelancer Rate</th>
+            <th style="color:var(--accent);">Operon</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Basic Info Site<br><small style="opacity:0.6;">3–5 pages, contact form, mobile-friendly</small></td>
+            <td>SGD 5,000–8,000</td>
+            <td>SGD 800–2,500</td>
+            <td style="color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;text-align:right;">SGD 2,500</td>
+          </tr>
+          <tr>
+            <td>Business / Corporate Site<br><small style="opacity:0.6;">5–15 pages, CMS, SEO, blog</small></td>
+            <td>SGD 8,000–20,000</td>
+            <td>SGD 1,500–5,000</td>
+            <td style="color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;text-align:right;">SGD 2,500</td>
+          </tr>
+          <tr>
+            <td>E-Commerce Platform<br><small style="opacity:0.6;">Product catalog, cart, payment gateway</small></td>
+            <td>SGD 10,000–25,000</td>
+            <td>SGD 3,000–8,000</td>
+            <td style="color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;text-align:right;">SGD 2,500</td>
+          </tr>
+          <tr style="background:rgba(45,207,176,0.04);">
+            <td><strong style="color:var(--text);">Custom Web App (e.g. Repeat Order)</strong><br><small style="opacity:0.6;">Ordering system + admin panel + email notifications + payment processing — all custom built</small></td>
+            <td><strong style="color:var(--text);">SGD 15,000–50,000</strong></td>
+            <td><strong style="color:var(--text);">SGD 5,000–15,000</strong></td>
+            <td style="color:var(--accent);font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;text-align:right;">SGD 2,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.5rem;">
+      <div class="card accent-top">
+        <div class="card-title">Upfront Build — Market vs Operon</div>
+        <p>A custom web application like Repeat Order would cost SGD 15,000–50,000 from a traditional agency. Operon delivers the same calibre of product for <strong style="color:var(--accent);">SGD 2,500</strong> — a saving of up to SGD 47,500 per project.</p>
+      </div>
+      <div class="card accent-top">
+        <div class="card-title">Monthly Maintenance — Market vs Operon</div>
+        <p>Market maintenance rates for complex web apps run SGD 300–500/month. Operon's permanent maintenance fee of <strong style="color:var(--accent);">SGD 150/month</strong> is at or below the market floor — even for basic sites.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 PROOF OF CONCEPT ── -->
+<section class="doc-section">
+  <div class="section-label">04 · Proof of Concept</div>
+  <h2>Already built. Already working.</h2>
+  <p class="lead">Before incorporation, Operon's founder has completed four production-ready digital products across different categories — ordering platforms, internal tools, consumer web apps, and financial trackers — demonstrating range, speed, and delivery capability.</p>
+
+  <div class="project-card">
+    <div class="project-name">Repeat Order (RO)</div>
+    <div class="project-tag">Pick-Up Ordering Platform · F&B</div>
+    <p class="project-desc">A full-stack ordering website built for a Singapore-based matcha and coffee drinks brand. Customers can browse, customise, and pay for pick-up orders online. Features a complete ordering system, admin panel, order notifications, email confirmations, and Stripe payment processing — the exact type of custom web application Operon is positioned to deliver at scale.</p>
+    <div class="project-stack">
+      <span class="stack-tag">React / Vite</span>
+      <span class="stack-tag">Supabase</span>
+      <span class="stack-tag">Stripe Payments</span>
+      <span class="stack-tag">Resend Email</span>
+      <span class="stack-tag">GitHub</span>
+      <span class="stack-tag">Vercel</span>
+    </div>
+  </div>
+
+  <div class="project-card" style="margin-top:1.25rem;">
+    <div class="project-name">Compass</div>
+    <div class="project-tag">Internal Platform · Business Tool</div>
+    <p class="project-desc">A digital platform built for internal business use, demonstrating Operon's capability beyond customer-facing products. Shows range across different product types and use cases beyond the primary target market.</p>
+    <div class="project-stack">
+      <span class="stack-tag">Full-Stack Web Application</span>
+      <span class="stack-tag">Custom UI</span>
+    </div>
+  </div>
+
+  <div class="project-card" style="margin-top:1.25rem;">
+    <div class="project-name">Aurum Vault</div>
+    <div class="project-tag">Consumer Web App · Motivational Content Platform</div>
+    <p class="project-desc">A motivational quote platform featuring 664 curated quotes across 12 mood-based categories, with a black and gold aesthetic. Includes a GitHub API-backed admin panel for content management. Demonstrates Operon's ability to build content-driven consumer platforms with custom backend administration — not just transactional sites.</p>
+    <div class="project-stack">
+      <span class="stack-tag">Custom Frontend</span>
+      <span class="stack-tag">GitHub API</span>
+      <span class="stack-tag">Admin Panel</span>
+      <span class="stack-tag">Vercel</span>
+    </div>
+  </div>
+
+  <div class="project-card" style="margin-top:1.25rem;">
+    <div class="project-name">Aurum Ledger</div>
+    <div class="project-tag">Personal Finance Tracker · Web Application</div>
+    <p class="project-desc">A personal finance management tool built with Supabase authentication and real-time data sync. Features SGD as the default currency, Singapore-specific expense categories, and a dedicated Debts tab covering personal debts and credit card tracking. Demonstrates Operon's ability to deliver authenticated, data-driven single-page applications with real-time functionality.</p>
+    <div class="project-stack">
+      <span class="stack-tag">Supabase Auth</span>
+      <span class="stack-tag">Real-Time Sync</span>
+      <span class="stack-tag">SGD / SG-Specific</span>
+      <span class="stack-tag">Single HTML App</span>
+    </div>
+  </div>
+
+  <div class="highlight" style="margin-top:2rem;">
+    <p>All four products were built and deployed to production standard — not prototypes. Each demonstrates a different capability: <em>ordering systems, internal tools, content platforms, and financial applications</em>. Operon arrives with a portfolio, not a pitch.</p>
+  </div>
+</section>
+
+<!-- ── 05 FINANCIAL PROJECTIONS ── -->
+<section class="doc-section">
+  <div class="section-label">05 · Financial Projections</div>
+  <h2>Year 1 & Year 2 forecast</h2>
+  <p class="lead">Projections are presented across two scenarios — conservative (11 clients) and optimistic (20 clients) — reflecting the stated Year 1 target range. Recurring fees are treated as permanent. All figures in SGD.</p>
+
+  <div class="table-wrap" style="margin-top:2rem;border-radius:14px;">
+    <table class="fin-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Conservative<br><small style="font-weight:400;opacity:0.6;">11 clients</small></th>
+          <th>Optimistic<br><small style="font-weight:400;opacity:0.6;">20 clients</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="3">Revenue — Year 1</td></tr>
+        <tr>
+          <td>Upfront project fees</td>
+          <td class="conservative">27,500</td>
+          <td class="optimistic">50,000</td>
+        </tr>
+        <tr>
+          <td>Recurring fees (permanent, staggered onboarding)</td>
+          <td class="conservative">11,550</td>
+          <td class="optimistic">22,500</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total Year 1 Revenue</td>
+          <td class="conservative">39,050</td>
+          <td class="optimistic">72,500</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">Operating Costs — Year 1</td></tr>
+        <tr>
+          <td>Incorporation (ACRA)</td>
+          <td>315</td>
+          <td>315</td>
+        </tr>
+        <tr>
+          <td>Corporate secretarial (annual)</td>
+          <td>600</td>
+          <td>600</td>
+        </tr>
+        <tr>
+          <td>Software tools — Claude AI, Vercel Pro, Supabase Pro<br><small style="opacity:0.6;">GitHub & Resend on free tiers · Stripe is transaction-based, no monthly fee</small></td>
+          <td>1,200</td>
+          <td>1,200</td>
+        </tr>
+        <tr>
+          <td>Miscellaneous & admin</td>
+          <td>1,200</td>
+          <td>1,200</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total Year 1 Costs</td>
+          <td>3,315</td>
+          <td>3,315</td>
+        </tr>
+
+        <tr class="profit-row">
+          <td>Projected Year 1 Profit</td>
+          <td>35,735</td>
+          <td>69,185</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tools breakdown -->
+  <div style="margin-top:1.5rem;">
+    <div class="section-label" style="margin-bottom:1rem;">Software Tools Cost Breakdown (Monthly)</div>
+    <div class="table-wrap" style="border-radius:14px;">
+      <table class="fin-table">
+        <thead>
+          <tr><th>Tool</th><th>Purpose</th><th>Monthly Cost (USD)</th><th>Monthly Cost (SGD ~)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claude AI Pro</td><td>AI-assisted development & content</td><td style="text-align:right;">$20</td><td style="text-align:right;color:var(--text);font-family:'Syne',sans-serif;font-weight:600;">~$27</td></tr>
+          <tr><td>Vercel Pro</td><td>Frontend deployment & hosting</td><td style="text-align:right;">$20</td><td style="text-align:right;color:var(--text);font-family:'Syne',sans-serif;font-weight:600;">~$27</td></tr>
+          <tr><td>Supabase Pro</td><td>Backend, database & auth</td><td style="text-align:right;">$25</td><td style="text-align:right;color:var(--text);font-family:'Syne',sans-serif;font-weight:600;">~$34</td></tr>
+          <tr><td>GitHub</td><td>Source control & version management</td><td style="text-align:right;">Free</td><td style="text-align:right;color:var(--accent);font-family:'Syne',sans-serif;font-weight:600;">Free</td></tr>
+          <tr><td>Resend</td><td>Transactional email (order confirmations)</td><td style="text-align:right;">Free</td><td style="text-align:right;color:var(--accent);font-family:'Syne',sans-serif;font-weight:600;">Free</td></tr>
+          <tr><td>Stripe</td><td>Payment processing</td><td style="text-align:right;">Transaction-based</td><td style="text-align:right;color:var(--accent);font-family:'Syne',sans-serif;font-weight:600;">No fixed fee</td></tr>
+          <tr class="total-row"><td>Total Monthly</td><td></td><td style="text-align:right;">~$65 USD</td><td style="text-align:right;color:var(--accent);">~SGD 88</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.78rem;margin-top:0.75rem;opacity:0.7;">Annual total ~SGD 1,056. Budgeted at SGD 1,200 to account for exchange rate fluctuations and potential usage overages. All tools are already active and self-funded by the director — no capital injection required from THEONEPERCENT HOLDINGS.</p>
+  </div>
+
+  <!-- MRR Growth Visual -->
+  <div class="mrr-section">
+    <div class="mrr-label">Monthly Recurring Revenue Build-Up — Optimistic Scenario (20 clients, staggered onboarding, permanent recurring)</div>
+    <div class="mrr-bars" id="mrrBars"></div>
+    <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted);">
+      <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+      <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:2.5rem;">
+    <div class="stat-block">
+      <div class="stat-value">SGD 1,650</div>
+      <div class="stat-label">Monthly recurring at Year 1 end</div>
+      <div class="stat-sub">Conservative · 11 clients · permanent</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-value">SGD 3,000</div>
+      <div class="stat-label">Monthly recurring at Year 1 end</div>
+      <div class="stat-sub">Optimistic · 20 clients · permanent</div>
+    </div>
+  </div>
+
+  <!-- Year 2 -->
+  <div style="margin-top:3rem;">
+    <div class="section-label" style="margin-bottom:1.25rem;">Year 2 Outlook</div>
+    <p>With all Year 1 clients retained on permanent recurring and the same onboarding pace, Year 2 revenue grows significantly — driven by 12 full months of recurring from existing clients plus new upfront fees.</p>
+    <div class="grid-2" style="margin-top:1.5rem;">
+      <div class="stat-block">
+        <div class="stat-value">~SGD 59,000</div>
+        <div class="stat-label">Projected Year 2 Revenue</div>
+        <div class="stat-sub">Conservative · +11 new clients</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value">~SGD 109,000</div>
+        <div class="stat-label">Projected Year 2 Revenue</div>
+        <div class="stat-sub">Optimistic · +20 new clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 OPERATIONS ── -->
+<section class="doc-section">
+  <div class="section-label">06 · Operations Plan</div>
+  <h2>How Operon runs day-to-day</h2>
+  <p class="lead">Operon is designed to be lean from the start — a one-person operation in Year 1 with a structured plan to bring in talent as client volume grows.</p>
+
+  <div style="margin-top:2rem;">
+    <div class="ops-item">
+      <div class="ops-icon">👤</div>
+      <div>
+        <div class="ops-title">Leadership</div>
+        <p class="ops-desc">Operon is led day-to-day by Fathul Iman (CEO, THEONEPERCENT HOLDINGS), who oversees all client delivery, product development, and business development in Year 1.</p>
+      </div>
+    </div>
+    <div class="ops-item">
+      <div class="ops-icon">🛠️</div>
+      <div>
+        <div class="ops-title">Build Stack</div>
+        <p class="ops-desc">All products are built on a proven, production-tested modern stack. <strong style="color:var(--text);">React / Vite</strong> is the frontend framework used to build the user interface. <strong style="color:var(--text);">GitHub</strong> serves as the source control and code repository — code is versioned here and Vercel auto-deploys from it. <strong style="color:var(--text);">Supabase</strong> handles the backend, database, and authentication. <strong style="color:var(--text);">Stripe</strong> processes payments. <strong style="color:var(--text);">Vercel</strong> hosts and deploys the frontend. <strong style="color:var(--text);">Resend</strong> delivers transactional emails such as order confirmations.</p>
+      </div>
+    </div>
+    <div class="ops-item">
+      <div class="ops-icon">⚡</div>
+      <div>
+        <div class="ops-title">Delivery Speed</div>
+        <p class="ops-desc">A standard client website or ordering platform is delivered within <strong style="color:var(--text);">1–2 weeks</strong> of project kickoff. The streamlined, systems-driven build process enables consistent, high-quality output at a pace traditional agencies cannot match.</p>
+      </div>
+    </div>
+    <div class="ops-item">
+      <div class="ops-icon">📈</div>
+      <div>
+        <div class="ops-title">Team Expansion Plan</div>
+        <p class="ops-desc">As client volume grows beyond 10 active accounts, Operon will evaluate bringing in a part-time developer or project coordinator. Expansion will be driven by revenue, not anticipated ahead of it.</p>
+      </div>
+    </div>
+    <div class="ops-item">
+      <div class="ops-icon">🔒</div>
+      <div>
+        <div class="ops-title">Client Retention</div>
+        <p class="ops-desc">The SGD 150/month retainer model creates a strong incentive for retention: clients who rely on Operon for ongoing maintenance have low churn motivation. Support is delivered remotely via messaging channels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 CORPORATE STRUCTURE ── -->
+<section class="doc-section">
+  <div class="section-label">07 · Corporate Structure</div>
+  <h2>How Operon sits within the group</h2>
+  <p class="lead">Operon will be incorporated as a wholly owned Singapore-registered subsidiary of THEONEPERCENT HOLDINGS PTE. LTD., consistent with the group's portfolio company model.</p>
+
+  <div class="structure-diagram">
+    <div>
+      <div class="struct-box parent">THEONEPERCENT HOLDINGS PTE. LTD.</div>
+      <div class="struct-note">Parent · Holding Company</div>
+    </div>
+
+    <div class="struct-connector">
+      <div class="struct-line"></div>
+      <div class="struct-arrow">▼</div>
+    </div>
+
+    <div class="existing-cos">
+      <div class="existing-co">Existing Portfolio Co. A</div>
+      <div class="existing-co new-co">Operon ← Proposed</div>
+      <div class="existing-co">Future Portfolio Co.</div>
+    </div>
+    <div class="struct-note" style="margin-top:1rem;">Wholly Owned Subsidiaries</div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1.5rem;">
+    <div class="card">
+      <div class="card-title">Shareholding</div>
+      <p>100% held by THEONEPERCENT HOLDINGS PTE. LTD. upon incorporation via ACRA.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Governance</div>
+      <p>Fathul Iman serves as director and day-to-day operator. Board reporting consistent with the holdings group authority matrix.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 APPROVAL ── -->
+<section class="doc-section">
+  <div class="section-label">08 · Director Approval</div>
+  <h2>What we are asking the board to approve</h2>
+
+  <div class="approval-box">
+    <h3>Resolution for Approval</h3>
+    <p>The board of directors of THEONEPERCENT HOLDINGS PTE. LTD. is requested to resolve the following:</p>
+
+    <div class="approval-items">
+      <div class="approval-item">Incorporation of Operon as a wholly owned subsidiary in Singapore</div>
+      <div class="approval-item">Approval of the Operon brand identity and company name</div>
+      <div class="approval-item">Appointment of Fathul Iman as director and operator of Operon</div>
+      <div class="approval-item">Approval to commence client acquisition and project delivery</div>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted);text-align:center;max-width:480px;margin:0 auto 2rem;">Note: No operating budget is required from THEONEPERCENT HOLDINGS. All software tools and infrastructure are already active and self-funded by the director. The only costs requiring approval are the ACRA incorporation fee (SGD 315) and annual corporate secretarial (SGD 600).</p>
+
+    <div class="sig-grid" style="grid-template-columns:1fr;">
+      <div class="sig-block">
+        <div class="sig-role">Proposed by · CEO</div>
+        <div class="sig-name">Fathul Iman</div>
+        <div class="sig-date">June 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Operon</div>
+  <p>Confidential Director Proposal · THEONEPERCENT HOLDINGS PTE. LTD. · June 2026</p>
+</footer>
+
+<script>
+  // MRR bar chart — staggered onboarding of 20 clients over 12 months
+  const clients = [2, 4, 5, 7, 9, 11, 13, 15, 17, 18, 19, 20];
+  const mrr = clients.map(c => c * 150);
+  const maxMrr = Math.max(...mrr);
+
+  const container = document.getElementById('mrrBars');
+  if (container) {
+    mrr.forEach((val, i) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'bar-wrap';
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      const pct = (val / maxMrr) * 90;
+      bar.style.height = pct + '%';
+      bar.title = 'SGD ' + val.toLocaleString();
+      wrap.appendChild(bar);
+      container.appendChild(wrap);
+    });
+  }
+</script>
+</body>
+</html>

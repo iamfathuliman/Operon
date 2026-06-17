@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operon — Brand Identity</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #050E0B;
+    --surface:   #091A14;
+    --surface2:  #0D2419;
+    --accent:    #2DCFB0;
+    --accent2:   #1A8A72;
+    --text:      #E8F5F0;
+    --muted:     #5A8070;
+    --divider:   #122E22;
+  }
+
+  body {
+    background: radial-gradient(ellipse at 50% 0%, #0D2B1E 0%, #050E0B 60%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  canvas#network {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+  }
+
+  .logo-mark {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .logo-mark span {
+    color: var(--accent);
+  }
+
+  .tagline-main {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+  }
+
+  .scroll-hint {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-top: 1px solid var(--divider);
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+    max-width: 640px;
+  }
+
+  /* ── MEANING ── */
+  .meaning-block {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .meaning-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .meaning-block .bio-term {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .meaning-block h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .meaning-block p { max-width: 100%; }
+
+  .parallel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .parallel-card {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--divider);
+  }
+
+  .parallel-card .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .parallel-card .value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.2rem;
+    padding-top: 2rem;
+  }
+
+  /* ── TAGLINES ── */
+  .tagline-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .tagline-option {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .tagline-option:hover { border-color: var(--accent2); }
+
+  .tagline-option .tq {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .tagline-option .tq-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: right;
+    min-width: 140px;
+  }
+
+  .tag-pick {
+    border-color: var(--accent) !important;
+    background: linear-gradient(135deg, #0F1628, #0d1e1a);
+  }
+
+  .pick-badge {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    white-space: nowrap;
+  }
+
+  /* ── COLOURS ── */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+  }
+
+  .swatch-color {
+    height: 80px;
+  }
+
+  .swatch-info {
+    background: var(--surface);
+    padding: 0.85rem 1rem;
+  }
+
+  .swatch-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .swatch-hex {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+  }
+
+  .swatch-role {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    opacity: 0.7;
+  }
+
+  /* ── TYPE ── */
+  .type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .type-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .type-card .font-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .type-card .font-display {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .type-card .font-display.body-sample {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .type-card .font-name {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .type-card .font-use {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* ── PERSONALITY ── */
+  .trait-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .trait-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .trait-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .trait-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .trait-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 100%;
+  }
+
+  /* ── POSITIONING ── */
+  .position-box {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  .position-box p {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 100%;
+  }
+
+  .position-box p em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  /* ── LOGO CONCEPT ── */
+  .logo-concepts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .logo-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .logo-render {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .logo-render .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    vertical-align: middle;
+    margin: 0 1px 3px;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .logo-render .line {
+    display: inline-block;
+    width: 28px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    vertical-align: middle;
+    margin: 0 2px 3px;
+  }
+
+  .logo-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .logo-tag {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem 4rem;
+    border-top: 1px solid var(--divider);
+  }
+
+  footer .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  footer p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    max-width: 100%;
+    text-align: center;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .parallel-grid,
+    .type-grid,
+    .logo-concepts { grid-template-columns: 1fr; }
+    .tagline-option { flex-direction: column; align-items: flex-start; }
+    .tq-note { text-align: left !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <canvas id="network"></canvas>
+  <div class="hero-content">
+    <div class="eyebrow">Brand Identity Document</div>
+    <div class="logo-mark">Op<span>er</span>on</div>
+    <p class="tagline-main">Where systems become products.</p>
+    <div class="scroll-hint">Explore identity</div>
+  </div>
+</div>
+
+<!-- THE NAME -->
+<section>
+  <div class="section-label">The Name</div>
+  <h2>Where the name comes from</h2>
+  <p>Operon is a term from molecular biology — and its meaning is the foundation of everything this brand stands for.</p>
+
+  <div class="meaning-block">
+    <div class="bio-term">Molecular Biology · noun</div>
+    <h3>Operon</h3>
+    <p>A cluster of genes functioning as a single coordinated unit, controlled by one switch, producing a precise and purposeful output. Multiple elements. One intelligent system. One result.</p>
+
+    <div class="parallel-grid">
+      <div class="parallel-card">
+        <div class="label">In biology</div>
+        <div class="value">Genes working in unison under one regulator</div>
+      </div>
+      <div class="parallel-card">
+        <div class="label">At Operon</div>
+        <div class="value">AI, design, and engineering working as one</div>
+      </div>
+      <div class="parallel-card">
+        <div class="label">In biology</div>
+        <div class="value">A single switch, coordinated output</div>
+      </div>
+      <div class="parallel-card">
+        <div class="label">At Operon</div>
+        <div class="value">One brief, a finished product</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POSITIONING -->
+<section>
+  <div class="section-label">Positioning</div>
+  <h2>What Operon is</h2>
+  <p>Operon is a digital product studio that builds software, platforms, and websites for businesses — with the speed of intelligence and the precision of craft.</p>
+
+  <div class="position-box">
+    <p>Operon builds the <em>digital infrastructure of modern businesses</em> — from ordering platforms and customer-facing websites to internal tools and full-stack applications. Every product is designed to be fast, purposeful, and built to last.</p>
+  </div>
+</section>
+
+<!-- TAGLINES -->
+<section>
+  <div class="section-label">Brand Voice</div>
+  <h2>Tagline</h2>
+  <p>The chosen tagline positions Operon as the bridge between intelligence and a finished product — premium, subtle, and self-explanatory.</p>
+
+  <div class="tagline-grid" style="margin-top:2rem;">
+    <div class="tagline-option tag-pick">
+      <div>
+        <div class="tq">Where systems become products.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem">
+        <span class="tq-note">Premium, subtle, elegant</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOURS -->
+<section>
+  <div class="section-label">Visual Identity</div>
+  <h2>Colour palette</h2>
+  <p>Deep space darkness anchored by a bio-tech teal — precision and life in the same breath. The palette reads scientific, premium, and calm.</p>
+
+  <div class="palette">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#050E0B;border:1px solid #122E22;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Forest Black</div>
+        <div class="swatch-hex">#050E0B</div>
+        <div class="swatch-role">Primary background</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#091A14;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Deep Moss</div>
+        <div class="swatch-hex">#091A14</div>
+        <div class="swatch-role">Cards & panels</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2DCFB0;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Operon Teal</div>
+        <div class="swatch-hex">#2DCFB0</div>
+        <div class="swatch-role">Primary accent</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1A8A72;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Deep Teal</div>
+        <div class="swatch-hex">#1A8A72</div>
+        <div class="swatch-role">Hover & depth</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#E8F5F0;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Lunar White</div>
+        <div class="swatch-hex">#E8F5F0</div>
+        <div class="swatch-role">Primary text</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#5A8070;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Forest Slate</div>
+        <div class="swatch-hex">#5A8070</div>
+        <div class="swatch-role">Secondary text</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section>
+  <div class="section-label">Visual Identity</div>
+  <h2>Typography</h2>
+  <p>Syne carries the architectural authority of a firm that's been building for years. Space Grotesk keeps it readable and modern without leaning generic.</p>
+
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="font-label">Display — Headlines & Logo</div>
+      <div class="font-display">Operon</div>
+      <div class="font-name">Syne</div>
+      <div class="font-use">Bold, weight 700–800. Used for the wordmark, section titles, and hero copy.</div>
+    </div>
+    <div class="type-card">
+      <div class="font-label">Body — Copy & UI</div>
+      <div class="font-display body-sample">Built to last.</div>
+      <div class="font-name">Space Grotesk</div>
+      <div class="font-use">Weight 300–500. Used for paragraphs, labels, captions, and all interface text.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO CONCEPT -->
+<section>
+  <div class="section-label">Logo</div>
+  <h2>Wordmark</h2>
+  <p>The name alone, set in Syne 800. Clean, confident, no decoration. Lets the word carry its own authority at any size.</p>
+
+  <div style="margin-top:2rem;">
+    <div class="logo-card" style="max-width:400px;">
+      <div class="logo-tag">Pure Wordmark</div>
+      <div class="logo-render" style="font-size:3rem;margin:1rem 0;">Operon</div>
+      <div class="logo-desc">Syne ExtraBold, letter-spacing −0.02em. No icon, no mark — the name is the identity.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND PERSONALITY -->
+<section>
+  <div class="section-label">Brand Personality</div>
+  <h2>How Operon presents itself</h2>
+  <p>Four traits that guide every touchpoint — from the website copy to how you introduce the company in a meeting.</p>
+
+  <div class="trait-grid">
+    <div class="trait-card">
+      <div class="trait-icon">⚙️</div>
+      <div class="trait-title">Precise</div>
+      <div class="trait-desc">Every product is deliberate. No bloat, no guesswork. Operon ships things that work exactly as intended.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-icon">🧬</div>
+      <div class="trait-title">Intelligent</div>
+      <div class="trait-desc">There's a smarter way to build — and Operon has found it. Intelligence is embedded in the process, not the marketing.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-icon">🏛️</div>
+      <div class="trait-title">Established</div>
+      <div class="trait-desc">Operon carries itself like a firm that's been trusted for years — calm, direct, and unhurried by trends.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-icon">🚀</div>
+      <div class="trait-title">Fast</div>
+      <div class="trait-desc">Speed without sacrifice. What takes others months, Operon delivers in weeks — without cutting corners on quality.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Operon</div>
+  <p>Brand Identity Document · Confidential · THEONEPERCENT HOLDINGS PTE. LTD.</p>
+</footer>
+
+<script>
+  // Animated network canvas — the signature element
+  const canvas = document.getElementById('network');
+  const ctx = canvas.getContext('2d');
+
+  let nodes = [];
+  let W, H;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function initNodes() {
+    nodes = [];
+    const count = Math.floor((W * H) / 18000);
+    for (let i = 0; i < count; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 2 + 1,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.01 + Math.random() * 0.02,
+        active: Math.random() > 0.5
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    const maxDist = 140;
+
+    nodes.forEach(n => {
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+      n.pulse += n.pulseSpeed;
+    });
+
+    // Draw edges
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * 0.35;
+          const isActive = nodes[i].active && nodes[j].active;
+          ctx.strokeStyle = isActive
+            ? `rgba(45, 207, 176, ${alpha})`
+            : `rgba(100, 130, 180, ${alpha * 0.4})`;
+          ctx.lineWidth = isActive ? 1 : 0.5;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      const pulse = (Math.sin(n.pulse) + 1) / 2;
+      const glow = n.active ? 0.8 + pulse * 0.2 : 0.2;
+
+      if (n.active) {
+        const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
+        grad.addColorStop(0, `rgba(45, 207, 176, ${glow * 0.4})`);
+        grad.addColorStop(1, 'rgba(45, 207, 176, 0)');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = n.active
+        ? `rgba(45, 207, 176, ${glow})`
+        : `rgba(100, 130, 180, 0.3)`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); initNodes(); });
+  resize();
+  initNodes();
+  draw();
+</script>
+</body>
+</html>
