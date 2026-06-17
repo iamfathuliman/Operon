@@ -43,6 +43,15 @@
     overflow: hidden;
   }
 
+  #coverCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
   .cover::before {
     content: '';
     position: absolute;
@@ -53,7 +62,10 @@
     pointer-events: none;
   }
 
-  .cover-top {
+  .cover-top, .cover-main, .cover-bottom {
+    position: relative;
+    z-index: 2;
+  }
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -518,7 +530,8 @@
     background: var(--surface);
     border: 1px solid var(--divider);
     border-radius: 0 0 14px 14px;
-    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin-top: 0;
   }
 
@@ -784,6 +797,8 @@
     .cover { padding: 2.5rem 1.5rem; }
     .doc-section { padding: 3.5rem 1.5rem; }
     .mrr-bars { display: none; }
+    .fin-table { font-size: 0.78rem; min-width: 500px; }
+    .fin-table th, .fin-table td { padding: 0.65rem 0.6rem; }
   }
 </style>
 </head>
@@ -791,6 +806,7 @@
 
 <!-- ── COVER ── -->
 <div class="cover">
+  <canvas id="coverCanvas"></canvas>
   <div class="cover-top">
     <div class="wordmark">Operon</div>
     <div class="confidential-badge">Confidential</div>
@@ -971,7 +987,7 @@
     <div class="section-label" style="margin-bottom:1.25rem;">Market Comparison — What the Market Charges vs What Operon Charges</div>
     <p style="margin-bottom:1.5rem;">Singapore website development costs have been verified against multiple 2026 market sources. Operon's SGD 2,500 flat fee represents a significant reduction from prevailing market rates — particularly for complex builds like full ordering platforms with payment systems and admin panels.</p>
 
-    <div class="table-wrap" style="border-radius:14px;">
+    <div class="table-wrap" style="border-radius:14px; overflow-x:auto; -webkit-overflow-scrolling:touch;">
       <table class="fin-table">
         <thead>
           <tr>
@@ -1088,7 +1104,7 @@
   <h2>Year 1 & Year 2 forecast</h2>
   <p class="lead">Projections are presented across two scenarios — conservative (11 clients) and optimistic (20 clients) — reflecting the stated Year 1 target range. Recurring fees are treated as permanent. All figures in SGD.</p>
 
-  <div class="table-wrap" style="margin-top:2rem;border-radius:14px;">
+  <div class="table-wrap" style="margin-top:2rem;border-radius:14px; overflow-x:auto; -webkit-overflow-scrolling:touch;">
     <table class="fin-table">
       <thead>
         <tr>
@@ -1154,7 +1170,7 @@
   <!-- Tools breakdown -->
   <div style="margin-top:1.5rem;">
     <div class="section-label" style="margin-bottom:1rem;">Software Tools Cost Breakdown (Monthly)</div>
-    <div class="table-wrap" style="border-radius:14px;">
+    <div class="table-wrap" style="border-radius:14px; overflow-x:auto; -webkit-overflow-scrolling:touch;">
       <table class="fin-table">
         <thead>
           <tr><th>Tool</th><th>Purpose</th><th>Monthly Cost (USD)</th><th>Monthly Cost (SGD ~)</th></tr>
@@ -1233,14 +1249,14 @@
       <div class="ops-icon">🛠️</div>
       <div>
         <div class="ops-title">Build Stack</div>
-        <p class="ops-desc">All products are built on a proven, production-tested modern stack. <strong style="color:var(--text);">React / Vite</strong> is the frontend framework used to build the user interface. <strong style="color:var(--text);">GitHub</strong> serves as the source control and code repository — code is versioned here and Vercel auto-deploys from it. <strong style="color:var(--text);">Supabase</strong> handles the backend, database, and authentication. <strong style="color:var(--text);">Stripe</strong> processes payments. <strong style="color:var(--text);">Vercel</strong> hosts and deploys the frontend. <strong style="color:var(--text);">Resend</strong> delivers transactional emails such as order confirmations.</p>
+        <p class="ops-desc">All products are built on a proven, production-tested modern stack. React / Vite is the frontend framework used to build the user interface. GitHub serves as the source control and code repository — code is versioned here and Vercel auto-deploys from it. Supabase handles the backend, database, and authentication. Stripe processes payments. Vercel hosts and deploys the frontend. Resend delivers transactional emails such as order confirmations.</p>
       </div>
     </div>
     <div class="ops-item">
       <div class="ops-icon">⚡</div>
       <div>
         <div class="ops-title">Delivery Speed</div>
-        <p class="ops-desc">A standard client website or ordering platform is delivered within <strong style="color:var(--text);">1–2 weeks</strong> of project kickoff. The streamlined, systems-driven build process enables consistent, high-quality output at a pace traditional agencies cannot match.</p>
+        <p class="ops-desc">A standard client website or ordering platform is delivered within 1–2 weeks of project kickoff. The streamlined, systems-driven build process enables consistent, high-quality output at a pace traditional agencies cannot match.</p>
       </div>
     </div>
     <div class="ops-item">
